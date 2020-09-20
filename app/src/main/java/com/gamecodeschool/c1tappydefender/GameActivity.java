@@ -3,7 +3,10 @@ package com.gamecodeschool.c1tappydefender;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.WindowManager;
 
 public class GameActivity extends AppCompatActivity  {
@@ -17,7 +20,16 @@ public class GameActivity extends AppCompatActivity  {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
-        gameView = new TDView(this);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getSupportActionBar().hide();
+        }
+        // Get a Display object to access screen details
+        Display display = getWindowManager().getDefaultDisplay();
+        // Load the resolution into a Point object
+        Point size = new Point();
+        display.getSize(size);
+
+        gameView = new TDView(this, size.x, size.y);
         setContentView(gameView);
     }
 

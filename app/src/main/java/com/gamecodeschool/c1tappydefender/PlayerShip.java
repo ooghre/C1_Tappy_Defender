@@ -9,16 +9,49 @@ public class PlayerShip {
     private int x;
     private int y;
     private int speed = 0;
+    private boolean boosting;
 
-    public PlayerShip(Context context){
+    private final int GRAVITY = -12;
+    private int maxY;
+    private int minY;
+    private final int MIN_SPEED = 1;
+    private final int MAX_SPEED = 20;
+
+    public PlayerShip(Context context, int screenX, int screenY){
         int x = 50;
         int y = 50;
-        speed = 50;
+        speed = 1;
         bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ship);
+        boosting = false;
+        maxY = screenY - bitmap.getHeight();
+        minY = 0;
     }
 
     public void update(){
-        x++;
+        if(boosting){
+            speed+=2;
+        }
+        else{
+            speed-=5;
+        }
+
+        if(speed>MAX_SPEED){
+            speed = MAX_SPEED;
+        }
+        if(speed<MIN_SPEED){
+            speed = MIN_SPEED;
+        }
+
+        // move the ship up or down
+        y -= speed + GRAVITY;
+        // But don't let ship stray off screen
+        if (y < minY) {
+            y = minY;
+        }
+
+        if(y> maxY){
+            y= maxY;
+        }
     }
 
     public int getX(){
@@ -31,6 +64,13 @@ public class PlayerShip {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public void setBoosting() {
+        boosting = true;
+    }
+    public void stopBoosting() {
+        boosting = false;
     }
 
     public Bitmap getBitmap() {
