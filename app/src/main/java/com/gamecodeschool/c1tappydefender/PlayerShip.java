@@ -3,6 +3,7 @@ package com.gamecodeschool.c1tappydefender;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 
 public class PlayerShip {
     private Bitmap bitmap;
@@ -10,6 +11,7 @@ public class PlayerShip {
     private int y;
     private int speed = 0;
     private boolean boosting;
+    private Rect hitBox;
 
     private final int GRAVITY = -12;
     private int maxY;
@@ -25,6 +27,7 @@ public class PlayerShip {
         boosting = false;
         maxY = screenY - bitmap.getHeight();
         minY = 0;
+        hitBox = new Rect(x,y, bitmap.getWidth(), bitmap.getHeight());
     }
 
     public void update(){
@@ -52,6 +55,12 @@ public class PlayerShip {
         if(y> maxY){
             y= maxY;
         }
+
+        // Refresh hit box location
+        hitBox.left = x;
+        hitBox.top = y;
+        hitBox.right = x + bitmap.getWidth();
+        hitBox.bottom = y + bitmap.getHeight();
     }
 
     public int getX(){
@@ -64,6 +73,10 @@ public class PlayerShip {
 
     public int getSpeed() {
         return speed;
+    }
+
+    public Rect getHitbox(){
+        return hitBox;
     }
 
     public void setBoosting() {
